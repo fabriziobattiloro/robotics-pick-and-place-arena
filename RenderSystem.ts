@@ -181,6 +181,10 @@ export class RenderSystem {
         this.renderer.render(this.scene, this.camera); 
     }
 
+    renderNow() {
+        this.renderer.render(this.scene, this.camera);
+    }
+
     private initContactMarkers() {
         this.contactMarkers = new THREE.InstancedMesh(
             new THREE.SphereGeometry(0.02, 8, 8), 

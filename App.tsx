@@ -859,6 +859,7 @@ export function App() {
 
               // Wait for render, then capture screenshot with markers
               await new Promise(r => setTimeout(r, 200));
+              simRef.current?.renderSys.renderNow();
               const screenshot = simRef.current?.renderSys.getCanvasSnapshot(canvas.width, canvas.height, 'image/png') || '';
 
               tlog('OK', `${modelOption.id}/${type} — ${detections.length} detections, screenshot captured`);
