@@ -1,6 +1,6 @@
-# Franka Panda — Pick & Place with Vision-Language Models
+# Franka Panda — Pick & Place with AI Models
 
-A browser-based embodied-reasoning demo. A vision-language model (Gemini, Claude, or GPT) looks at a simulated 3D scene, returns 2D detections for the objects you asked about, and the Franka Emika Panda arm picks them up and drops them in a tray.
+A browser-based embodied-reasoning demo. A model (Gemini, Claude, or GPT) looks at a simulated 3D scene, returns 2D detections for the objects you asked about, and the Franka Emika Panda arm picks them up and drops them in a tray.
 
 > This project started as a fork of Google's official AI Studio app — [Robotics: Franka Pick and Place](https://ai.studio/apps/bundled/robotics_franka_pick_and_place) — which was Gemini-only. It has been extended with support for **Anthropic Claude** and **OpenAI GPT** models, a **Run All Models** benchmarking mode, saved cube scenes, optimised per-provider prompts, and a two-pass detection pipeline.
 
@@ -9,7 +9,7 @@ A browser-based embodied-reasoning demo. A vision-language model (Gemini, Claude
 The app closes a **Sense → Plan → Act** loop every time you hit *Send*:
 
 1. **Sense** — `RenderSystem` snapshots the current Three.js canvas as a JPEG.
-2. **Plan** — the image + your text prompt go to the selected VLM, which returns JSON (2D boxes, points, or segmentation masks).
+2. **Plan** — the image + your text prompt go to the selected model, which returns JSON (2D boxes, points, or segmentation masks).
 3. **Project** — each 2D detection is raycast into the 3D scene to get a world-space target.
 4. **Act** — `SequenceAnimator` drives the arm through Hover → Open → Lower → Grasp → Lift → Move → Drop, using an analytical IK solver (`FrankaAnalyticalIK`) for the 7-DOF redundancy.
 

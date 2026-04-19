@@ -63,7 +63,7 @@ export function UnifiedSidebar({
   isPickingUp = false,
   playbackSpeed = 1
 }: UnifiedSidebarProps) {
-  const [prompt, setPrompt] = useState('red cubes');
+  const [prompt, setPrompt] = useState('All cubes');
   const [type, setType] = useState<DetectType>('Segmentation masks');
   const [temperature, setTemperature] = useState(0.1);
   const [enableThinking, setEnableThinking] = useState(true);

@@ -1,9 +1,5 @@
 ﻿import type { DetectType } from '../types';
 
-export type AnthropicPromptProfile = 'computer_use_a' | 'computer_use_b' | 'computer_use_c';
-
-export const ACTIVE_ANTHROPIC_PROFILE: AnthropicPromptProfile = 'computer_use_a';
-
 export const basePromptParts: Record<DetectType, [string, string, string]> = {
   '2D bounding boxes': [
     'Detect',
@@ -59,26 +55,6 @@ export const optimisedPromptParts: Record<string, Record<DetectType, [string, st
   },
   anthropic: {
     '2D bounding boxes': [
-      'You are an object detection system. Look at this image and detect',
-      'items',
-      '. Only detect items that fully match the description. Definition of “cube”: A 3D block with a visible square top face and visible edges; solid colored faces (e.g., red, green, yellow, cyan). Ignore robot, base/grid, shadows, blue/gray dots/markers, and any non-cube shapes. Output ONLY a JSON array (no other text) where each entry has “box_2d” as [ymin, xmin, ymax, xmax] with values normalized to 0-1000 scale (0=top/left edge, 1000=bottom/right edge), and “label” as “cube”. If there are no cubes, return [] exactly.',
-    ],
-    'Segmentation masks': [
-      'You are an object detection system. Look at this image and identify',
-      'all objects',
-      '. Output ONLY a JSON array (no other text) where each entry has “box_2d” as [ymin, xmin, ymax, xmax] with values normalized to 0-1000 scale (0=top/left edge, 1000=bottom/right edge), “mask” as the segmentation mask, and “label” as a descriptive text string.',
-    ],
-    'Points': [
-      'You are a precise visual annotator. Your task is to find all and only the colored cubes in the image.',
-      'items',
-      ' Definition of “cube”: A 3D block with a visible square top face and visible edges; solid colored faces (e.g., red, green, yellow, cyan). Ignore robot, base/grid, shadows, blue/gray dots/markers, and any non-cube shapes. Point definition: point = the center of the top face of the cube in 2D; if the top face is not visible, use the center of the visible cube area. Output rules: Return ONLY a JSON array of objects with exactly {“point”: [y, x], “label”: “cube”}. The points are in [y, x] format normalized to 0-1000. If there are no cubes, return [] exactly. No extra text, no commentary, no markdown.',
-    ],
-  },
-};
-
-const anthropicPromptProfiles: Record<AnthropicPromptProfile, Record<DetectType, [string, string, string]>> = {
-  computer_use_a: {
-    '2D bounding boxes': [
       'You are a high-precision robotic vision system. The image is a 1000x1000 normalized grid where [500,500] is the exact center. Output ONLY a raw JSON array. Inside EACH object, you MUST generate keys in this exact order: 1) "perceive" (brief visual description), 2) "box_2d" (the [ymin, xmin, ymax, xmax] coordinates normalized 0-1000 tightly fitting the ENTIRE object), 3) "label" (e.g. "red cube", use spaces). CRITICAL CONSTRAINTS: Ignore the large gray square target. Only detect colored cubes. Ignore any purple dots, markers, or UI overlays. Then detect ',
       'items',
       '. You MUST output a JSON array starting strictly with [ and ending with ]. Do not use markdown backticks or any text outside the array.',
@@ -92,40 +68,6 @@ const anthropicPromptProfiles: Record<AnthropicPromptProfile, Record<DetectType,
       'You are a high-precision robotic vision system. The image is a 1000x1000 normalized grid where [500,500] is the exact center. Output ONLY a raw JSON array. For EACH detected object, generate keys in this EXACT order: 1) "perceive" (describe the exact pixel-level location relative to center), 2) "point" (CRITICAL: exact [y, x] center of the top visible face normalized 0-1000), 3) "label" (e.g. "red cube", use spaces). CRITICAL CONSTRAINTS: Ignore the large gray square target. Only detect colored cubes with a visible top face. Ignore any purple dots, markers, or UI overlays. Then target ALL matching items among: ',
       'items',
       '. Output ONLY a JSON array starting with [ and ending with ].',
-    ],
-  },
-  computer_use_b: {
-    '2D bounding boxes': [
-      'You are a high-precision robotic vision system. The image is a 1000x1000 normalized grid where [500,500] is the exact center. Output ONLY a raw JSON array. Inside EACH object, you MUST generate keys in this exact order: 1) "perceive" (brief visual description), 2) "box_2d" (the [ymin, xmin, ymax, xmax] coordinates normalized 0-1000 tightly fitting the ENTIRE object), 3) "label" (e.g. "red cube", use spaces). CRITICAL CONSTRAINTS: Ignore the large gray square target. Only detect colored cubes. Ignore any purple dots, markers, or UI overlays. Then detect ',
-      'items',
-      '. You MUST output a JSON array starting strictly with [ and ending with ]. Do not use markdown backticks or any text outside the array.',
-    ],
-    'Segmentation masks': [
-      'You are a high-precision robotic vision system. Output ONLY a raw JSON array. Inside EACH object, you MUST generate keys in this exact order: 1) "perceive" (brief visual description), 2) "mask" (the segmentation data), 3) "label" (concise description). Then identify ',
-      'all objects',
-      '. You MUST output a JSON array starting strictly with [ and ending with ]. Do not use markdown backticks.',
-    ],
-    'Points': [
-      'You are a high-precision robotic vision system. The image is a 1000x1000 normalized grid where [500,500] is the exact center. Output ONLY a raw JSON array. For EACH detected object, generate keys in this EXACT order: 1) "perceive" (describe position relative to center), 2) "box_2d" (tight [ymin, xmin, ymax, xmax] normalized 0-1000 fitting the entire visible object), 3) "point" (CRITICAL: exact [y, x] center mathematically derived from the box_2d), 4) "label" (e.g. "red cube", use spaces). CRITICAL CONSTRAINTS: Ignore the large gray square target. Only detect colored cubes with a visible top face. Ignore any purple dots, markers, or UI overlays. Then target ALL matching items among: ',
-      'items',
-      '. Output ONLY a JSON array starting with [ and ending with ].',
-    ],
-  },
-  computer_use_c: {
-    '2D bounding boxes': [
-      'You are a high-precision robotic vision system. The image is a 1000x1000 normalized grid where [500,500] is the exact center. Output ONLY a raw JSON array. Inside EACH object, you MUST generate keys in this exact order: 1) "perceive" (brief visual description), 2) "box_2d" (the [ymin, xmin, ymax, xmax] coordinates normalized 0-1000 tightly fitting the ENTIRE object), 3) "label" (e.g. "red cube", use spaces). CRITICAL CONSTRAINTS: Ignore the large gray square target. Only detect colored cubes. Ignore any purple dots, markers, or UI overlays. Then detect ',
-      'items',
-      '. You MUST output a JSON array starting strictly with [ and ending with ]. Do not use markdown backticks or any text outside the array.',
-    ],
-    'Segmentation masks': [
-      'You are a high-precision robotic vision system. Output ONLY a raw JSON array. Inside EACH object, you MUST generate keys in this exact order: 1) "perceive" (brief visual description), 2) "mask" (the segmentation data), 3) "label" (concise description). Then identify ',
-      'all objects',
-      '. You MUST output a JSON array starting strictly with [ and ending with ]. Do not use markdown backticks.',
-    ],
-    'Points': [
-      'You are a high-precision robotic vision system. The image is mapped to a strict 1000x1000 normalized grid where [500,500] is the center. To achieve pixel-perfect point accuracy for robotic grasping, you MUST use dual-perspective bounding. Output ONLY a raw JSON array. For EACH detected object, generate keys in this EXACT order: 1) "perceive" (describe relative position), 2) "box_whole_object" (tight [ymin, xmin, ymax, xmax] normalized 0-1000 around the ENTIRE visible object including base/sides), 3) "box_top_face_only" (strict [ymin, xmin, ymax, xmax] around ONLY the top graspable surface), 4) "point" (CRITICAL: exact [y, x] center mathematically derived from box_top_face_only), 5) "label" (e.g. "red cube", use spaces). CRITICAL CONSTRAINTS: Ignore the large gray square target. Only detect colored cubes with a visible top face. Ignore any purple dots or markers. Then target ALL matching items among: ',
-      'items',
-      '. You must guarantee the "point" key exists for every item. Output ONLY a JSON array starting strictly with [ and ending with ]. Do not use markdown formatting.',
     ],
   },
 };
@@ -142,41 +84,17 @@ export const optimisedSpatialPromptParts: [string, string, string] = [
   ' might be clustered. Output ONLY a JSON array (no other text) where each entry has "box_2d" as [ymin, xmin, ymax, xmax] with values normalized to 0-1000 scale (0=top/left, 1000=bottom/right), and "label" describing that region. Focus on spatial clusters, NOT individual objects. Maximum 4 regions. Example: [{"box_2d": [100, 200, 400, 500], "label": "cluster of red cubes"}]',
 ];
 
-const anthropicSpatialProfiles: Record<AnthropicPromptProfile, [string, string, string]> = {
-  computer_use_a: [
-    'You are a high-precision robotic vision system. Output ONLY a raw JSON array. Inside EACH object, you MUST generate keys in this exact order: 1) "perceive" (brief visual description), 2) "box_2d" (the [ymin, xmin, ymax, xmax] coordinates normalized 0-1000 tightly fitting the region), 3) "label" (region description). Identify up to 4 rectangular regions where ',
-    'items',
-    ' might be clustered. You MUST output a JSON array starting strictly with [ and ending with ]. Do not use markdown backticks or any text outside the array.',
-  ],
-  computer_use_b: [
-    'You are a high-precision robotic vision system. Output ONLY a raw JSON array. Inside EACH object, you MUST generate keys in this exact order: 1) "perceive" (brief visual description), 2) "box_2d" (the [ymin, xmin, ymax, xmax] coordinates normalized 0-1000 tightly fitting the region), 3) "label" (region description). Identify up to 4 rectangular regions where ',
-    'items',
-    ' might be clustered. You MUST output a JSON array starting strictly with [ and ending with ]. Do not use markdown backticks or any text outside the array.',
-  ],
-  computer_use_c: [
-    'You are a high-precision robotic vision system. Output ONLY a raw JSON array. Inside EACH object, you MUST generate keys in this exact order: 1) "perceive" (brief visual description), 2) "box_2d" (the [ymin, xmin, ymax, xmax] coordinates normalized 0-1000 tightly fitting the region), 3) "label" (region description). Identify up to 4 rectangular regions where ',
-    'items',
-    ' might be clustered. You MUST output a JSON array starting strictly with [ and ending with ]. Do not use markdown backticks or any text outside the array.',
-  ],
-};
-
 export function getDetectionPromptParts(provider: string, type: DetectType, optimised: boolean = false): [string, string, string] {
   if (optimised) {
     const providerPrompts = optimisedPromptParts[provider] || optimisedPromptParts.google;
     return providerPrompts[type];
   }
-  if (provider === 'anthropic') {
-    return anthropicPromptProfiles[ACTIVE_ANTHROPIC_PROFILE][type];
-  }
   return basePromptParts[type];
 }
 
-export function getSpatialSegmentationPromptParts(provider: string, optimised: boolean = false): [string, string, string] {
+export function getSpatialSegmentationPromptParts(_provider: string, optimised: boolean = false): [string, string, string] {
   if (optimised) {
     return optimisedSpatialPromptParts;
-  }
-  if (provider === 'anthropic') {
-    return anthropicSpatialProfiles[ACTIVE_ANTHROPIC_PROFILE];
   }
   return baseSpatialPromptParts;
 }

@@ -1050,12 +1050,12 @@ export function App() {
                   <div className={`glass-panel p-12 rounded-[3rem] flex-1 flex flex-col justify-center shadow-2xl transition-colors ${isDarkMode ? 'bg-slate-900/70 border-white/10' : 'bg-white/70 border-white/80'}`}>
                     <h3 className={`text-sm font-bold uppercase tracking-widest mb-4 ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>System Overview</h3>
                     <p className={`text-sm leading-relaxed mb-6 ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                      This demo showcases spatial reasoning for robotics. Using <strong>Gemini Robotics Embodied Reasoning 1.5</strong>, the system analyzes a 2D image to identify objects and calculate manipulation coordinates.
+                      A browser-based embodied-reasoning demo for the Franka Emika Panda arm. Pick your model — <strong>Gemini</strong>, <strong>Claude</strong>, or <strong>GPT</strong> — and it detects objects in the scene and drives the arm to pick and place them.
                     </p>
                     <ul className={`text-[13px] space-y-3 list-disc list-inside ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
                         <li>Real-time MuJoCo physics simulation</li>
                         <li>Analytical Inverse Kinematics for Franka Panda</li>
-                        <li>Call Gemini Robotics Embodied Reasoning 1.5 for detection</li>
+                        <li>Multi-provider detection (Gemini, Claude, GPT) with a Run All benchmarking mode</li>
                     </ul>
                   </div>
 
