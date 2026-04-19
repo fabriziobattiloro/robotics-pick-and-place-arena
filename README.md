@@ -51,3 +51,5 @@ Everything lives in the right-hand sidebar.
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+Developed by [Fabrizio Battiloro](https://www.linkedin.com/in/fabrizio-battiloro) and [Nicolò Bonaldo](https://www.linkedin.com/in/nicolòbonaldo).
